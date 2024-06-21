@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hero-background{
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.514), rgba(0, 0, 0, 0.514)),url("./assets/Hero.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;    
+}
