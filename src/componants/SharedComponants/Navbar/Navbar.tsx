@@ -2,8 +2,24 @@ import Logo from "../Logo/Logo";
 
 import FilledButton from "../Buttons/FilledButton/FilledButton";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
+  const links = (
+    <>
+      <li>
+        <NavLink to={"/"}> Home </NavLink>
+      </li>
+    </>
+  );
+
+  const contextData = useContext(AuthContext);
+  if (!contextData) {
+    return alert("AuthContext is null or undifined");
+  }
+  const { user, logout } = contextData;
   return (
     <div className="navbar absolute top-0">
       <div className="container mx-auto">
@@ -29,23 +45,7 @@ const Navbar = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <li>
-                <a>Item 1</a>
-              </li>
-              <li>
-                <a>Parent</a>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <a>Item 3</a>
-              </li>
+              {links}
             </ul>
           </div>
           <a className="btn btn-ghost text-xl h-10">
@@ -53,32 +53,45 @@ const Navbar = () => {
           </a>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </details>
-            </li>
-            <li>
-              <a>Item 3</a>
-            </li>
-          </ul>
+          <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
         <div className="navbar-end flex">
-          <Link to={"/login"}>
-            <FilledButton text="Login" />
-          </Link>
+          {user ? (
+            <div className="dropdown">
+              {/* -------Profile section------ */}
+              {/* Clickable button */}
+              <div tabIndex={0} role="button" className="m-1">
+                <div className="avatar">
+                  <div className="w-12 mask mask-squircle">
+                    <img
+                      src={
+                        user?.photoURL
+                          ? user?.photoURL
+                          : "https://img.icons8.com/?size=256w&id=7819&format=png&color=FA5252"
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* Menu List */}
+              <ul
+                tabIndex={0}
+                className="dropdown-content z-[1] menu p-0 -left-[100px] border border-net-red shadow-net-red/60 shadow-lg rounded-box w-40 "
+              >
+                <p className="p-4">{user?.displayName}</p>
+                <li className="border-y border-net-red">
+                  <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li>
+                  <button onClick={logout}>Logout</button>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link to={"/login"}>
+              <FilledButton text="Login" />
+            </Link>
+          )}
         </div>
       </div>
     </div>
