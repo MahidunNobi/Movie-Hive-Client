@@ -17,7 +17,8 @@ const Navbar = () => {
 
   const contextData = useContext(AuthContext);
   if (!contextData) {
-    return alert("AuthContext is null or undifined");
+    alert("AuthContext is null or undifined");
+    return;
   }
   const { user, logout } = contextData;
   return (
