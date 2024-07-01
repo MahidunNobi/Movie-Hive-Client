@@ -10,6 +10,7 @@ import {
 } from "firebase/auth";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import auth from "../Firebase/firebase.config";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 type contextType = {
   user: User | null;
@@ -17,7 +18,7 @@ type contextType = {
   SignUp: (email: string, password: string) => Promise<UserCredential>;
   googleLogin: () => Promise<UserCredential>;
   login: (email: string, password: string) => Promise<UserCredential>;
-  logout: () => Promise<UserCredential>;
+  logout: () => Promise<void>;
 };
 
 export const AuthContext = createContext<contextType | null>(null);
@@ -25,6 +26,9 @@ export const AuthContext = createContext<contextType | null>(null);
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
+  // Custome hooks
+  const axiosSecure = useAxiosSecure();
 
   // Prividers
   const googleProvider = new GoogleAuthProvider();
@@ -58,6 +62,12 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        const res = await axiosSecure.post("/jwt", {
+          email: currentUser.email,
+        });
+        console.log(res);
+      }
       setLoading(false);
     });
 

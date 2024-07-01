@@ -77,13 +77,15 @@ const Navbar = () => {
               {/* Menu List */}
               <ul
                 tabIndex={0}
-                className="dropdown-content z-[1] menu p-0 -left-[100px] border border-net-red shadow-net-red/60 shadow-lg rounded-box w-40 "
+                className="dropdown-content z-[1] menu p-0 -left-[100px] rounded-md overflow-hidden w-40 bg-gray-300 *:font-medium"
               >
-                <p className="p-4">{user?.displayName}</p>
-                <li className="border-y border-net-red">
+                <p className="px-4 py-2 text-lg text-net-red font-semibold uppercase">
+                  {user?.displayName}
+                </p>
+                <li className="border-y border-net-red/30 text-net-red hover:bg-net-red hover:text-white">
                   <Link to="/dashboard">Dashboard</Link>
                 </li>
-                <li>
+                <li className="text-net-red hover:bg-net-red hover:text-white">
                   <button onClick={logout}>Logout</button>
                 </li>
               </ul>
