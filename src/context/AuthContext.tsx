@@ -11,6 +11,8 @@ import {
 import { ReactNode, createContext, useEffect, useState } from "react";
 import auth from "../Firebase/firebase.config";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import axios from "axios";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 type contextType = {
   user: User | null;
@@ -29,6 +31,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   // Custome hooks
   const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
 
   // Prividers
   const googleProvider = new GoogleAuthProvider();
@@ -42,7 +45,9 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const res = await axiosSecure("/logout");
+    console.log(res.data);
     return signOut(auth);
   };
 
@@ -63,10 +68,11 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        // const demoRes = await axiosSecure("http://localhost:5000");
+        // console.log(demoRes);
         const res = await axiosSecure.post("/jwt", {
           email: currentUser.email,
         });
-        console.log(res);
       }
       setLoading(false);
     });
