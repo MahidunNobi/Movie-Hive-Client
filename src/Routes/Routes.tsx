@@ -6,6 +6,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 
 import DashboardLayout from "../layouts/DashboardLayout";
+import AddMovie from "../pages/Dashboard/AddMovie/AddMovie";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,12 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashboardLayout />,
+    children: [
+      {
+        path: "add-movie",
+        element: <AddMovie />,
+      },
+    ],
   },
 ]);
 
