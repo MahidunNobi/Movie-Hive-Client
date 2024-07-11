@@ -1,7 +1,7 @@
 import Logo from "../Logo/Logo";
 
 import FilledButton from "../Buttons/FilledButton/FilledButton";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../../context/AuthContext";
 import { NavLink } from "react-router-dom";
@@ -14,7 +14,7 @@ const Navbar = () => {
       </li>
     </>
   );
-
+  const location = useLocation();
   const contextData = useContext(AuthContext);
   if (!contextData) {
     alert("AuthContext is null or undifined");
@@ -22,7 +22,11 @@ const Navbar = () => {
   }
   const { user, logout } = contextData;
   return (
-    <div className="navbar absolute top-0">
+    <div
+      className={`navbar ${
+        location.pathname.includes("dashboard") ? "" : "absolute top-0"
+      }`}
+    >
       <div className="container mx-auto">
         <div className="navbar-start">
           <div className="dropdown">

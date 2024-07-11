@@ -3,7 +3,7 @@ import Logo from "../../componants/SharedComponants/Logo/Logo";
 import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import FilledButton from "../../componants/SharedComponants/Buttons/FilledButton/FilledButton";
-import { useContext } from "react";
+import { ReactNode, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 
@@ -12,7 +12,7 @@ type Inputs = {
   password: string;
 };
 
-const Login = () => {
+const Login = (): ReactNode => {
   const {
     register,
     handleSubmit,

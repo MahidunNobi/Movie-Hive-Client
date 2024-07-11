@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 // import {UserCredential} from "firebase/auth"
 import { Link, useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ type Inputs = {
   confirmPassword: string;
 };
 
-const Register = () => {
+const Register = (): ReactNode => {
   const [error, setError] = useState<string>("");
   const {
     register,
