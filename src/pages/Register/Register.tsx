@@ -6,9 +6,10 @@ import FilledButton from "../../componants/SharedComponants/Buttons/FilledButton
 import Logo from "../../componants/SharedComponants/Logo/Logo";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../context/AuthContext";
-import { updateProfile } from "firebase/auth";
+import { updateProfile, User } from "firebase/auth";
 import Swal from "sweetalert2";
 import auth from "../../Firebase/firebase.config";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 type Inputs = {
   email: string;
@@ -17,7 +18,7 @@ type Inputs = {
   confirmPassword: string;
 };
 
-const Register = (): ReactNode => {
+const Register = (): React.ReactNode => {
   const [error, setError] = useState<string>("");
   const {
     register,
@@ -25,14 +26,16 @@ const Register = (): ReactNode => {
     formState: { errors },
   } = useForm<Inputs>();
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
 
   const contextData = useContext(AuthContext);
   // Validating the context data
   if (!contextData) {
-    return alert("AuthContext is null or undifined");
+    alert("AuthContext is null or undifined");
+    return;
   }
 
-  const { SignUp, user, loading, googleLogin } = contextData;
+  const { SignUp, user, loading, googleLogin, updateAccount } = contextData;
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setError("");
@@ -40,6 +43,7 @@ const Register = (): ReactNode => {
     const email = data.email;
     const password = data.password;
     const confirmPassword = data.confirmPassword;
+    console.log(name);
 
     // Validating password and confirm password
     if (password !== confirmPassword) {
@@ -48,11 +52,8 @@ const Register = (): ReactNode => {
 
     try {
       const signupRes = await SignUp(email, password);
-      if (auth.currentUser) {
-        await updateProfile(auth.currentUser, {
-          displayName: name,
-        });
-      }
+      await updateAccount(name);
+      const saveUserRes = await axiosPublic.post("/users", auth.currentUser);
       Swal.fire({
         title: "Signup in successfully!",
         icon: "success",
@@ -75,6 +76,7 @@ const Register = (): ReactNode => {
   const handleGoogleLogin = async () => {
     try {
       const googleREs = await googleLogin();
+      const saveUserRes = await axiosPublic.post("/users", auth.currentUser);
       Swal.fire({
         title: "Sign in successfully!",
         icon: "success",

@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import auth from "../Firebase/firebase.config";
@@ -21,6 +22,7 @@ type contextType = {
   googleLogin: () => Promise<UserCredential>;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
+  updateAccount: (name: string, photoURL?: string) => Promise<void>;
 };
 
 export const AuthContext = createContext<contextType | null>(null);
@@ -55,6 +57,13 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
+  const updateAccount = (name: string, photoURL?: string) => {
+    return updateProfile(auth.currentUser as User, {
+      displayName: name,
+      photoURL: photoURL || "",
+    });
+  };
+
   const userInfo = {
     user,
     loading,
@@ -62,14 +71,13 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     googleLogin,
     login,
     logout,
+    updateAccount,
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // const demoRes = await axiosSecure("http://localhost:5000");
-        // console.log(demoRes);
         const res = await axiosSecure.post("/jwt", {
           email: currentUser.email,
         });

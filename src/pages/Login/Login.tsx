@@ -6,24 +6,26 @@ import FilledButton from "../../componants/SharedComponants/Buttons/FilledButton
 import { ReactNode, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 type Inputs = {
   email: string;
   password: string;
 };
 
-const Login = (): ReactNode => {
+const Login = (): React.ReactNode => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
   const navigate = useNavigate();
-
+  const axiosPublic = useAxiosPublic();
   const contextData = useContext(AuthContext);
   // Validating the context data
   if (!contextData) {
-    return alert("AuthContext is null or undifined");
+    alert("AuthContext is null or undifined");
+    return;
   }
 
   const { user, loading, googleLogin, login } = contextData;
@@ -33,6 +35,7 @@ const Login = (): ReactNode => {
     const password = data.password;
     try {
       const res = await login(email, password);
+      const saveUserRes = await axiosPublic.post("/users", res.user);
       Swal.fire({
         title: "Login in successful",
         icon: "success",
@@ -54,6 +57,7 @@ const Login = (): ReactNode => {
   const handleGoogleLogin = async () => {
     try {
       const googleREs = await googleLogin();
+      const saveUserRes = await axiosPublic.post("/users", googleREs.user);
       Swal.fire({
         title: "Sign in successfully!",
         icon: "success",
