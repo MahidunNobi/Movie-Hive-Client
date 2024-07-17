@@ -11,4 +11,19 @@ export default {
     },
   },
   plugins: [require("daisyui")],
+  daisyui: {
+    themes: [
+      {
+        netflixTheme: {
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
+          ...require("daisyui/src/theming/themes")["light"],
+          primary: "#db0000",
+          secondary: "teal",
+          // ".btn.btn-primary": {
+          //   color: "#fff"
+          // }
+        },
+      },
+    ],
+  },
 };

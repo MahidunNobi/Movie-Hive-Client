@@ -18,7 +18,7 @@ const DashboardLayout = () => {
   ];
 
   return (
-    <div>
+    <div data-theme="">
       <div className="flex">
         <Sidebar>
           {/* <SidebarItem
