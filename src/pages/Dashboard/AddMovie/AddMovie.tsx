@@ -4,6 +4,8 @@ import { MovieType } from "../../../types/MovieTypes";
 import Select, { ActionMeta, MultiValue } from "react-select";
 import { useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { GenersType } from "../../../types/GenersType";
+import Swal from "sweetalert2";
 
 interface Option {
   value: string;
@@ -15,9 +17,9 @@ const AddMovie = () => {
   const axiosSecure = useAxiosSecure();
   const axiosPublic = useAxiosPublic();
   const [selectedGeners, setSelectedGeners] =
-    useState<null | MultiValue<Option>>(null);
+    useState<null | MultiValue<GenersType>>(null);
 
-  const { isPending, data: genersOptions } = useQuery({
+  const { data: genersOptions } = useQuery({
     queryKey: ["Geners"],
     queryFn: async () => {
       const res = await axiosPublic.get("/geners");
@@ -32,12 +34,6 @@ const AddMovie = () => {
     },
   });
 
-  // const genersOptions: Option[] = [
-  //   { value: "Action", label: "Action" },
-  //   { value: "Thriller", label: "Thriller" },
-  //   { value: "Horror", label: "Horror" },
-  // ];
-
   const handleGenerChange = (
     newValue: MultiValue<Option>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -50,11 +46,17 @@ const AddMovie = () => {
   const handleAddMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
+    if (!selectedGeners || selectedGeners.length < 1) {
+      return Swal.fire({
+        title: "Please select at least one Geners",
+        icon: "error",
+      });
+    }
     const credentials: MovieType = {
       movie_name: form.movie_name.value,
       published_year: form.published_year.value,
       story: form.story.value,
-      movie_geners: form.movie_geners.value,
+      movie_geners: selectedGeners,
       movie_ratting: form.movie_ratting.value,
     };
     mutation.mutate(credentials);
@@ -132,7 +134,6 @@ const AddMovie = () => {
             placeholder="4.5/5"
             required
             max={5}
-            maxLength={1}
             name="movie_ratting"
             className="input input-bordered w-full mt-2"
           />
