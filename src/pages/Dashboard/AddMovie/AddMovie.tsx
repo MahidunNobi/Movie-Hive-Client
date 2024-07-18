@@ -1,19 +1,54 @@
+import { useMutation } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { MovieType } from "../../../types/MovieTypes";
+import Select, { ActionMeta, MultiValue } from "react-select";
+import { useState } from "react";
 
+interface Option {
+  value: string;
+  label: string;
+}
 const AddMovie = () => {
   const axiosSecure = useAxiosSecure();
+
+  // const animatedComponents = makeAnimated();
+  const [selectedGeners, setSelectedGeners] =
+    useState<null | MultiValue<Option>>(null);
+
+  const genersOptions: Option[] = [
+    { value: "Action", label: "Action" },
+    { value: "Thriller", label: "Thriller" },
+    { value: "Horror", label: "Horror" },
+  ];
+
+  const mutation = useMutation({
+    mutationFn: (movie: MovieType) => {
+      const res = axiosSecure.post("/movies", movie);
+      return res;
+    },
+  });
+
+  const handleGenerChange = (
+    newValue: MultiValue<Option>,
+    actionMeta: ActionMeta<Option>
+  ) => {
+    console.log(actionMeta);
+    setSelectedGeners(newValue);
+    return;
+  };
+  console.log(selectedGeners);
+
   const handleAddMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
-    const movie = {
+    const credentials: MovieType = {
       movie_name: form.movie_name.value,
       published_year: form.published_year.value,
       story: form.story.value,
       movie_geners: form.movie_geners.value,
       movie_ratting: form.movie_ratting.value,
     };
-    const res = await axiosSecure.post("/movies", movie);
-    console.log(res);
+    mutation.mutate(credentials);
   };
 
   return (
@@ -68,12 +103,20 @@ const AddMovie = () => {
           <label htmlFor="movie_geners" className="font-semibold">
             Movie Genres
           </label>
-          <input
+          {/* <input
             type="text"
             required
             placeholder="Movie categories"
             name="movie_geners"
             className="input input-bordered w-full mt-2"
+          /> */}
+          <Select
+            closeMenuOnSelect={false}
+            // components={animatedComponents}
+            defaultValue={selectedGeners}
+            onChange={handleGenerChange}
+            isMulti
+            options={genersOptions}
           />
         </div>
         {/* Movie Ratting */}
@@ -92,8 +135,25 @@ const AddMovie = () => {
             className="input input-bordered w-full mt-2"
           />
         </div>
-        <button className="btn btn-primary w-full md:col-span-2 "> ADD </button>
+        {mutation.isPending ? (
+          <span className="loading loading-spinner loading-md text-net-red mx-auto"></span>
+        ) : (
+          <button className="btn btn-primary w-full md:col-span-2 ">
+            {" "}
+            ADD{" "}
+          </button>
+        )}
       </form>
+      {mutation.isSuccess && (
+        <h6 className="text-green-600 font-medium mt-3 text-center">
+          Movie added to your collection
+        </h6>
+      )}
+      {mutation.isError && (
+        <h6 className="text-red-600 font-medium mt-3 text-center">
+          Something went wrong.
+        </h6>
+      )}
     </div>
   );
 };

@@ -43,7 +43,6 @@ const Register = (): React.ReactNode => {
     const email = data.email;
     const password = data.password;
     const confirmPassword = data.confirmPassword;
-    console.log(name);
 
     // Validating password and confirm password
     if (password !== confirmPassword) {
