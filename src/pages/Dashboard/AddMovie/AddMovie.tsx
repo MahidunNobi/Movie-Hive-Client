@@ -1,25 +1,29 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { MovieType } from "../../../types/MovieTypes";
 import Select, { ActionMeta, MultiValue } from "react-select";
 import { useState } from "react";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 interface Option {
   value: string;
   label: string;
 }
-const AddMovie = () => {
-  const axiosSecure = useAxiosSecure();
 
-  // const animatedComponents = makeAnimated();
+const AddMovie = () => {
+  // Hooks
+  const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
   const [selectedGeners, setSelectedGeners] =
     useState<null | MultiValue<Option>>(null);
 
-  const genersOptions: Option[] = [
-    { value: "Action", label: "Action" },
-    { value: "Thriller", label: "Thriller" },
-    { value: "Horror", label: "Horror" },
-  ];
+  const { isPending, data: genersOptions } = useQuery({
+    queryKey: ["Geners"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/geners");
+      return res.data;
+    },
+  });
 
   const mutation = useMutation({
     mutationFn: (movie: MovieType) => {
@@ -28,15 +32,20 @@ const AddMovie = () => {
     },
   });
 
+  // const genersOptions: Option[] = [
+  //   { value: "Action", label: "Action" },
+  //   { value: "Thriller", label: "Thriller" },
+  //   { value: "Horror", label: "Horror" },
+  // ];
+
   const handleGenerChange = (
     newValue: MultiValue<Option>,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     actionMeta: ActionMeta<Option>
   ) => {
-    console.log(actionMeta);
     setSelectedGeners(newValue);
     return;
   };
-  console.log(selectedGeners);
 
   const handleAddMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -103,13 +112,6 @@ const AddMovie = () => {
           <label htmlFor="movie_geners" className="font-semibold">
             Movie Genres
           </label>
-          {/* <input
-            type="text"
-            required
-            placeholder="Movie categories"
-            name="movie_geners"
-            className="input input-bordered w-full mt-2"
-          /> */}
           <Select
             closeMenuOnSelect={false}
             // components={animatedComponents}
@@ -138,10 +140,7 @@ const AddMovie = () => {
         {mutation.isPending ? (
           <span className="loading loading-spinner loading-md text-net-red mx-auto"></span>
         ) : (
-          <button className="btn btn-primary w-full md:col-span-2 ">
-            {" "}
-            ADD{" "}
-          </button>
+          <button className="btn btn-primary w-full md:col-span-2 ">ADD</button>
         )}
       </form>
       {mutation.isSuccess && (

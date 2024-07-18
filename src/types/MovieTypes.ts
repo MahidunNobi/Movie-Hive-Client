@@ -1,4 +1,5 @@
 export type MovieType = {
+  _id?: string;
   movie_name: string;
   published_year: number;
   story: string;
