@@ -8,6 +8,7 @@ import Register from "../pages/Register/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddMovie from "../pages/Dashboard/AddMovie/AddMovie";
 import ManageMovie from "../pages/Dashboard/ManageMovie/ManageMovie";
+import MovieDetails from "../pages/Dashboard/MovieDetails/MovieDetails";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "manage-movie",
         element: <ManageMovie />,
+      },
+      {
+        path: "manage-movie/:id",
+        element: <MovieDetails />,
       },
     ],
   },

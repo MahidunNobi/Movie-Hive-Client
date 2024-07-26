@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { MovieType } from "../../../types/MovieTypes";
-import { FaStar, FaStarHalfAlt } from "react-icons/fa";
+import Ratting from "../../../componants/SharedComponants/Ratting/Ratting";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaPen } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ManageMovie = () => {
   const axiosSecure = useAxiosSecure();
@@ -35,10 +38,9 @@ const ManageMovie = () => {
         {/* head */}
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
-            <th></th>
+            <th>Movie Name</th>
+            <th>Rating</th>
+            <th>Action</th>
           </tr>
         </thead>
 
@@ -61,7 +63,12 @@ const ManageMovie = () => {
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">{movie.movie_name}</div>
+                      <Link
+                        to={`${movie._id}`}
+                        className="font-bold hover:text-blue-600 duration-100"
+                      >
+                        {movie.movie_name} - {movie.published_year}
+                      </Link>
                       <div className="text-sm opacity-50">
                         {movie.movie_geners?.map((geners) => (
                           <span
@@ -76,19 +83,21 @@ const ManageMovie = () => {
                   </div>
                 </td>
                 <td>
-                  <div className="flex  items-center">
-                    <FaStar className="text-orange-500 text-lg" />
-                    <FaStar className="text-orange-500 text-lg" />
-                    <FaStar className="text-orange-500 text-lg" />
-                    <FaStarHalfAlt className="text-orange-500 text-lg" />
-                    <FaStar className="text-gray-500 text-lg" />
-                    <span className="text-sm ml-2 text-gray-600">(4.5/5)</span>
+                  <div className="flex flex-col items-center">
+                    <Ratting rating={movie.movie_ratting} />
+                    <span className="text-sm ml-2 text-gray-600">
+                      ({movie.movie_ratting}/5)
+                    </span>
                   </div>
                 </td>
-                <td>Purple</td>
-                <th>
-                  <button className="btn btn-ghost btn-xs">details</button>
-                </th>
+                <td>
+                  <button className="btn btn-sm btn-circle btn-outline mr-2">
+                    <FaPen size={16} />
+                  </button>
+                  <button className="btn btn-sm btn-circle btn-outline btn-error">
+                    <RiDeleteBin6Line size={16} />
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
