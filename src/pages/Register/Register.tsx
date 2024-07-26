@@ -1,4 +1,4 @@
-import { ReactNode, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 // import {UserCredential} from "firebase/auth"
 import { Link, useNavigate } from "react-router-dom";
@@ -6,7 +6,6 @@ import FilledButton from "../../componants/SharedComponants/Buttons/FilledButton
 import Logo from "../../componants/SharedComponants/Logo/Logo";
 import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../context/AuthContext";
-import { updateProfile, User } from "firebase/auth";
 import Swal from "sweetalert2";
 import auth from "../../Firebase/firebase.config";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
@@ -35,7 +34,7 @@ const Register = (): React.ReactNode => {
     return;
   }
 
-  const { SignUp, user, loading, googleLogin, updateAccount } = contextData;
+  const { SignUp, loading, googleLogin, updateAccount } = contextData;
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setError("");

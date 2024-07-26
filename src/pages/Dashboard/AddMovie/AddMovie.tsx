@@ -58,6 +58,7 @@ const AddMovie = () => {
       story: form.story.value,
       movie_geners: selectedGeners,
       movie_ratting: form.movie_ratting.value,
+      movie_poster_url: form.movie_poster_url.value,
     };
     mutation.mutate(credentials);
   };
@@ -136,6 +137,32 @@ const AddMovie = () => {
             max={5}
             name="movie_ratting"
             className="input input-bordered w-full mt-2"
+          />
+        </div>
+        {/* Movie poster url*/}
+        <div>
+          <label htmlFor="movie_poster_url" className="font-semibold">
+            Poster URL
+          </label>
+
+          <input
+            type="url"
+            placeholder="https://google.com/photos/12@4512#44521"
+            required
+            name="movie_poster_url"
+            className="input input-bordered w-full mt-2"
+          />
+        </div>
+        {/* Movie poster */}
+        <div>
+          <label htmlFor="movie_poster" className="font-semibold">
+            Poster
+          </label>
+
+          <input
+            name="movie_poster"
+            type="file"
+            className="file-input file-input-bordered w-full max-w-xs"
           />
         </div>
         {mutation.isPending ? (

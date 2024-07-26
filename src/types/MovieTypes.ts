@@ -9,4 +9,5 @@ export type MovieType = {
   movie_geners: MultiValue<GenersType>;
   movie_ratting: number;
   user?: string;
+  movie_poster_url?: string;
 };
