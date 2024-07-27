@@ -23,6 +23,7 @@ const EditMovie = () => {
     useState<null | MultiValue<GenersType>>(null);
   const navigate = useNavigate();
 
+  // Getting the geners
   const { data: genersOptions } = useQuery({
     queryKey: ["Geners"],
     queryFn: async () => {
@@ -30,6 +31,8 @@ const EditMovie = () => {
       return res.data;
     },
   });
+
+  // Loading the selected movie details
   const { isLoading, isPending, isError } = useQuery({
     queryKey: ["movie-details"],
     queryFn: async () => {
@@ -48,6 +51,7 @@ const EditMovie = () => {
     },
   });
 
+  // Handling geners change
   const handleGenerChange = (
     newValue: MultiValue<Option>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -57,6 +61,7 @@ const EditMovie = () => {
     return;
   };
 
+  // Handling update movie function
   const handleUpdateMovie = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -83,16 +88,20 @@ const EditMovie = () => {
     });
   };
 
+  // Handling loading state
   if (isLoading || isPending || !movieDetails) {
     return (
       <div className="w-full flex justify-center">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
-  } else if (isError) {
+  }
+
+  // Handling Error State
+  else if (isError) {
     return (
       <div className="w-full flex justify-center">
-        <h3 className="text-2xl"> There was an error. </h3>
+        <h3 className="text-2xl text-red-600"> There was an error. </h3>
       </div>
     );
   }
