@@ -14,13 +14,13 @@ const Rating: React.FC<RatingProps> = ({ rating }) => {
   for (let i = 1; i <= 5; i++) {
     if (rating >= i) {
       // Full star
-      stars.push(<FaStar className="text-orange-500 text-lg" />);
+      stars.push(<FaStar key={i} className="text-orange-500 text-lg" />);
     } else if (rating >= i - 0.5) {
       // Half star
-      stars.push(<FaStarHalfAlt className="text-orange-500 text-lg" />);
+      stars.push(<FaStarHalfAlt key={i} className="text-orange-500 text-lg" />);
     } else {
       // Empty star
-      stars.push(<FaStar className="text-gray-500 text-lg" />);
+      stars.push(<FaStar key={i} className="text-gray-500 text-lg" />);
     }
   }
 

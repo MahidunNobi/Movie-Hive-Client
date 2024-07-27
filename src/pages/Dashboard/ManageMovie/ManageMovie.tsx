@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { MovieType } from "../../../types/MovieTypes";
 import Ratting from "../../../componants/SharedComponants/Ratting/Ratting";
@@ -11,6 +11,7 @@ const ManageMovie = () => {
 
   const {
     data: moviesRes,
+    refetch,
     isLoading,
     isPending,
   } = useQuery<{ message: string; data: MovieType[] }>({
@@ -21,9 +22,26 @@ const ManageMovie = () => {
     },
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: (id: string | undefined) => {
+      const res = axiosSecure.delete(`/movies/${id}`);
+      return res;
+    },
+  });
+
   const movies = moviesRes?.data;
 
-  console.log(movies);
+  // Handling delete movie function
+  const handleDeleteMovie = async (id: string | undefined) => {
+    deleteMutation.mutate(id, {
+      onSuccess: (data) => {
+        if (data.data.success) {
+          refetch();
+        }
+      },
+    });
+  };
+
   if (isLoading || isPending) {
     return (
       <div className="w-full flex justify-center">
@@ -98,7 +116,10 @@ const ManageMovie = () => {
                   >
                     <FaPen size={16} />
                   </Link>
-                  <button className="btn btn-sm btn-circle btn-outline btn-error">
+                  <button
+                    onClick={() => handleDeleteMovie(movie._id)}
+                    className="btn btn-sm btn-circle btn-outline btn-error"
+                  >
                     <RiDeleteBin6Line size={16} />
                   </button>
                 </td>
