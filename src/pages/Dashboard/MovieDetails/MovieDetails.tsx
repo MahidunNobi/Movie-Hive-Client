@@ -1,15 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { MovieType } from "../../../types/MovieTypes";
 import Rating from "../../../componants/SharedComponants/Ratting/Ratting";
 import { FaPen } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const MovieDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
-  console.log(id);
+  const navigate = useNavigate();
+
+  // Getting movie details
   const {
     data: movieDetails,
     isLoading,
@@ -23,7 +26,24 @@ const MovieDetails = () => {
     },
   });
 
-  console.log(movieDetails);
+  // Delete mutation function
+  const deleteMutation = useMutation({
+    mutationFn: (id: string | undefined) => {
+      const res = axiosSecure.delete(`/movies/${id}`);
+      return res;
+    },
+  });
+
+  // Handling delete movie function
+  const handleDeleteMovie = async (id: string | undefined) => {
+    deleteMutation.mutate(id, {
+      onSuccess: (data) => {
+        if (data.data.success) {
+          navigate("/dashboard/manage-movie");
+        }
+      },
+    });
+  };
 
   if (isLoading || isPending) {
     return (
@@ -80,10 +100,16 @@ const MovieDetails = () => {
         <p className="text-gray-500">{movieDetails.story}</p>
         {/* Action Btns */}
         <div>
-          <button className="btn  btn-circle btn-outline mr-2">
+          <Link
+            to={`/dashboard/manage-movie/edit/${movieDetails._id}`}
+            className="btn  btn-circle btn-outline mr-2"
+          >
             <FaPen size={20} />
-          </button>
-          <button className="btn  btn-circle btn-outline btn-error">
+          </Link>
+          <button
+            onClick={() => handleDeleteMovie(movieDetails._id)}
+            className="btn  btn-circle btn-outline btn-error"
+          >
             <RiDeleteBin6Line size={20} />
           </button>
         </div>
