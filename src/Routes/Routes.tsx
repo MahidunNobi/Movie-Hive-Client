@@ -9,6 +9,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import AddMovie from "../pages/Dashboard/AddMovie/AddMovie";
 import ManageMovie from "../pages/Dashboard/ManageMovie/ManageMovie";
 import MovieDetails from "../pages/Dashboard/MovieDetails/MovieDetails";
+import EditMovie from "../pages/Dashboard/EditMovie/EditMovie";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "manage-movie/:id",
         element: <MovieDetails />,
+      },
+      {
+        path: "manage-movie/edit/:id",
+        element: <EditMovie />,
       },
     ],
   },

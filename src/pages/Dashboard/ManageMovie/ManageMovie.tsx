@@ -82,6 +82,7 @@ const ManageMovie = () => {
                     </div>
                   </div>
                 </td>
+                {/* Ratting */}
                 <td>
                   <div className="flex flex-col items-center">
                     <Ratting rating={movie.movie_ratting} />
@@ -91,9 +92,12 @@ const ManageMovie = () => {
                   </div>
                 </td>
                 <td>
-                  <button className="btn btn-sm btn-circle btn-outline mr-2">
+                  <Link
+                    to={`edit/${movie._id}`}
+                    className="btn btn-sm btn-circle btn-outline mr-2"
+                  >
                     <FaPen size={16} />
-                  </button>
+                  </Link>
                   <button className="btn btn-sm btn-circle btn-outline btn-error">
                     <RiDeleteBin6Line size={16} />
                   </button>
