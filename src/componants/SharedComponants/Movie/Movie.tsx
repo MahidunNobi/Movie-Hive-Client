@@ -1,10 +1,11 @@
-import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import FilledButton from "../Buttons/FilledButton/FilledButton";
 import { MovieType } from "../../../types/MovieTypes";
 import Rating from "../Ratting/Ratting";
+import { Link } from "react-router-dom";
 
 const Movie = ({ movie }: { movie: MovieType }) => {
   const {
+    _id,
     movie_name,
     movie_geners,
     movie_ratting,
@@ -53,8 +54,9 @@ const Movie = ({ movie }: { movie: MovieType }) => {
             {story.length > 290 ? `${story.slice(0, 290)}...` : story}
           </p>
         </div>
-
-        <FilledButton text="Details" />
+        <Link to={`/movies/${_id}`}>
+          <FilledButton text="Details" />
+        </Link>
       </div>
     </div>
   );

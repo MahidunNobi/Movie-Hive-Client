@@ -8,7 +8,8 @@ import Register from "../pages/Register/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddMovie from "../pages/Dashboard/AddMovie/AddMovie";
 import ManageMovie from "../pages/Dashboard/ManageMovie/ManageMovie";
-import MovieDetails from "../pages/Dashboard/MovieDetails/MovieDetails";
+import MovieDetails from "../pages/MovieDetails/MovieDetails";
+import DashboardMovieDetails from "../pages/Dashboard/MovieDetails/MovieDetails";
 import EditMovie from "../pages/Dashboard/EditMovie/EditMovie";
 import Movies from "../pages/Movies/Movies";
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/movies",
         element: <Movies />,
+      },
+      {
+        path: "/movies/:id",
+        element: <MovieDetails />,
       },
       {
         path: "login",
@@ -49,7 +54,7 @@ const router = createBrowserRouter([
       },
       {
         path: "manage-movie/:id",
-        element: <MovieDetails />,
+        element: <DashboardMovieDetails />,
       },
       {
         path: "manage-movie/edit/:id",
