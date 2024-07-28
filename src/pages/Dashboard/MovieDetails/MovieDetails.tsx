@@ -59,7 +59,6 @@ const MovieDetails = () => {
       </div>
     );
   }
-  console.log(location.pathname);
 
   return (
     <div className="flex flex-col md:flex-row gap-4">

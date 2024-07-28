@@ -23,7 +23,6 @@ const EditMovie = () => {
     useState<null | MultiValue<GenersType>>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
 
   // Getting the geners
   const { data: genersOptions } = useQuery({

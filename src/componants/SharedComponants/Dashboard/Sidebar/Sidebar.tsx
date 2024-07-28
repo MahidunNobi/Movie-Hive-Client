@@ -1,6 +1,7 @@
 import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react";
 import { createContext, useState } from "react";
 import Logo from "../../Logo/Logo";
+import { Link } from "react-router-dom";
 
 type SidebarContextType = {
   expanded: boolean;
@@ -23,13 +24,14 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             }`}
             alt="" */}
           {/* /> */}
-          <a
+          <Link
+            to={"/"}
             className={`h-10 overflow-hidden transition-all flex-1 ${
               expanded ? "w-auto" : "w-0"
             }`}
           >
             <Logo />
-          </a>
+          </Link>
           <button
             onClick={() => setExpanded((curr) => !curr)}
             className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
