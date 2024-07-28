@@ -16,7 +16,7 @@ const Featured = () => {
           Featured Movies
         </h1>
         {/* -------Featured movies container------ */}
-        <Swiper
+        {/* <Swiper
           slidesPerView={4}
           spaceBetween={10}
           centeredSlides={true}
@@ -51,7 +51,7 @@ const Featured = () => {
           <SwiperSlide>
             <Movie />
           </SwiperSlide>
-        </Swiper>
+        </Swiper> */}
       </div>
     </div>
   );

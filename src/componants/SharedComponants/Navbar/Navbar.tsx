@@ -10,7 +10,16 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink to={"/"}> Home </NavLink>
+        <NavLink className="py-0" to={"/"}>
+          {" "}
+          Home{" "}
+        </NavLink>
+      </li>
+      <li>
+        <NavLink className="py-0" to={"/movies"}>
+          {" "}
+          Movies{" "}
+        </NavLink>
       </li>
     </>
   );

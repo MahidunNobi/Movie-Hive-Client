@@ -10,6 +10,7 @@ import AddMovie from "../pages/Dashboard/AddMovie/AddMovie";
 import ManageMovie from "../pages/Dashboard/ManageMovie/ManageMovie";
 import MovieDetails from "../pages/Dashboard/MovieDetails/MovieDetails";
 import EditMovie from "../pages/Dashboard/EditMovie/EditMovie";
+import Movies from "../pages/Movies/Movies";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/movies",
+        element: <Movies />,
       },
       {
         path: "login",
