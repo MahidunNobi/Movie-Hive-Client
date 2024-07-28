@@ -6,7 +6,7 @@ import { useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { GenersType } from "../../../types/GenersType";
 import Swal from "sweetalert2";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 interface Option {
   value: string;
@@ -22,6 +22,8 @@ const EditMovie = () => {
   const [selectedGeners, setSelectedGeners] =
     useState<null | MultiValue<GenersType>>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
 
   // Getting the geners
   const { data: genersOptions } = useQuery({
@@ -82,6 +84,9 @@ const EditMovie = () => {
     mutation.mutate(credentials, {
       onSuccess: (data) => {
         if (data.data.success) {
+          if (location.state) {
+            return navigate(location.state);
+          }
           navigate(`/dashboard/manage-movie`);
         }
       },

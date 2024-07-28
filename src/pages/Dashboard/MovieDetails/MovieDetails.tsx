@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { MovieType } from "../../../types/MovieTypes";
 import Rating from "../../../componants/SharedComponants/Ratting/Ratting";
@@ -11,6 +11,7 @@ const MovieDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Getting movie details
   const {
@@ -58,6 +59,7 @@ const MovieDetails = () => {
       </div>
     );
   }
+  console.log(location.pathname);
 
   return (
     <div className="flex flex-col md:flex-row gap-4">
@@ -101,6 +103,7 @@ const MovieDetails = () => {
         {/* Action Btns */}
         <div>
           <Link
+            state={location.pathname}
             to={`/dashboard/manage-movie/edit/${movieDetails._id}`}
             className="btn  btn-circle btn-outline mr-2"
           >
