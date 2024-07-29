@@ -13,6 +13,8 @@ import DashboardMovieDetails from "../pages/Dashboard/MovieDetails/MovieDetails"
 import EditMovie from "../pages/Dashboard/EditMovie/EditMovie";
 import Movies from "../pages/Movies/Movies";
 import ProtectedRoute from "./ProtectedRoute";
+import ManageFeatured from "../pages/Dashboard/ManageFeatured/ManageFeatured";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +51,7 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
+      // ---------User Dashboard Routes---------
       {
         path: "add-movie",
         element: <AddMovie />,
@@ -64,6 +67,15 @@ const router = createBrowserRouter([
       {
         path: "manage-movie/edit/:id",
         element: <EditMovie />,
+      },
+      // ------------Admin Dashboard Routes----------
+      {
+        path: "manage-featured",
+        element: (
+          <AdminRoute>
+            <ManageFeatured />{" "}
+          </AdminRoute>
+        ),
       },
     ],
   },

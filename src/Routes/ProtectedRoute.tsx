@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to={"/login"} state={location.pathname} />;
   }
 
-  return <div>{children}</div>;
+  return children;
 };
 
 export default ProtectedRoute;

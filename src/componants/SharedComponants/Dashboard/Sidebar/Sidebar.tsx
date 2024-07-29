@@ -2,6 +2,7 @@ import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react";
 import { createContext, useState } from "react";
 import Logo from "../../Logo/Logo";
 import { Link } from "react-router-dom";
+import useAuth from "../../../../hooks/useAuth";
 
 type SidebarContextType = {
   expanded: boolean;
@@ -13,6 +14,7 @@ export const SidebarContext = createContext<SidebarContextType | undefined>(
 
 export default function Sidebar({ children }: { children: React.ReactNode }) {
   const [expanded, setExpanded] = useState<boolean>(true);
+  const authData = useAuth();
   return (
     <aside className="h-screen absolute top-0 left-0 md:static">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
@@ -44,12 +46,18 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           <ul className="flex-1 px-3">{children}</ul>
         </SidebarContext.Provider>
 
+        {/* ------ Bottom user ---------*/}
         <div className="border-t flex p-3">
           <img
-            src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
+            src={
+              authData?.user?.photoURL
+                ? authData?.user?.photoURL
+                : "https://img.icons8.com/?size=256w&id=7819&format=png&color=FA5252"
+            }
             alt=""
             className="w-10 h-10 rounded-md"
           />
+
           <div
             className={`
               flex justify-between items-center
@@ -57,8 +65,10 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
           `}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">John Doe</h4>
-              <span className="text-xs text-gray-600">johndoe@gmail.com</span>
+              <h4 className="font-semibold">{authData?.user?.displayName}</h4>
+              <span className="text-xs text-gray-600">
+                {authData?.user?.email}
+              </span>
             </div>
             <MoreVertical size={20} />
           </div>
