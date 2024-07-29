@@ -13,7 +13,6 @@ const Movies = () => {
       return res.data;
     },
   });
-  console.log(data);
 
   if (isLoading || isPending) {
     return (

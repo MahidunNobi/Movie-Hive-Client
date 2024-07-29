@@ -12,6 +12,7 @@ import MovieDetails from "../pages/MovieDetails/MovieDetails";
 import DashboardMovieDetails from "../pages/Dashboard/MovieDetails/MovieDetails";
 import EditMovie from "../pages/Dashboard/EditMovie/EditMovie";
 import Movies from "../pages/Movies/Movies";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +43,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "add-movie",

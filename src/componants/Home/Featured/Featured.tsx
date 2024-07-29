@@ -20,8 +20,6 @@ const Featured = () => {
       return res.data;
     },
   });
-  console.log(data);
-
   return (
     <div className="border-y-2 border-gray-600 py-24">
       <div className="container mx-auto">
