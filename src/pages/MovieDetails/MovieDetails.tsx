@@ -1,17 +1,12 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { MovieType } from "../../types/MovieTypes";
 import Rating from "../../componants/SharedComponants/Ratting/Ratting";
-import { FaPen } from "react-icons/fa";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { Link } from "react-router-dom";
 
 const MovieDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
-  const navigate = useNavigate();
-  const location = useLocation();
 
   // Getting movie details
   const {
@@ -26,25 +21,6 @@ const MovieDetails = () => {
       return res.data;
     },
   });
-
-  // Delete mutation function
-  const deleteMutation = useMutation({
-    mutationFn: (id: string | undefined) => {
-      const res = axiosSecure.delete(`/movies/${id}`);
-      return res;
-    },
-  });
-
-  // Handling delete movie function
-  const handleDeleteMovie = async (id: string | undefined) => {
-    deleteMutation.mutate(id, {
-      onSuccess: (data) => {
-        if (data.data.success) {
-          navigate("/dashboard/manage-movie");
-        }
-      },
-    });
-  };
 
   if (isLoading || isPending) {
     return (
