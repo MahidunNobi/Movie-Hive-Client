@@ -1,5 +1,5 @@
 const ManageFeatured = () => {
-  return <div>ManageFeatured</div>;
+  return <div> This is Manage Featured page</div>;
 };
 
 export default ManageFeatured;
