@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { SidebarContext } from "./Sidebar";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 type PropsTypes = {
   path: string;
@@ -17,18 +18,18 @@ export function SidebarItem({ path, icon, text, alert }: PropsTypes) {
   const active = location.pathname.includes(path);
 
   return (
-    <Link to={`/dashboard/${path}`}>
+    <NavLink to={`/dashboard/${path}`} className={"bg-red-500"}>
       <li
         className={`
           relative flex items-center py-2 px-3 my-1
           font-medium rounded-md cursor-pointer
           transition-colors group
-          ${
-            active
-              ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
-              : "hover:bg-indigo-50 text-gray-600"
-          }
-      `}
+          `}
+        // ${
+        //   active
+        //     ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+        //     : "hover:bg-indigo-50 text-gray-600"
+        // }
       >
         {icon}
         <span
@@ -59,7 +60,7 @@ export function SidebarItem({ path, icon, text, alert }: PropsTypes) {
           </div>
         )}
       </li>
-    </Link>
+    </NavLink>
   );
 }
 

@@ -23,8 +23,8 @@ p{
 }
 
 a.active {
-    background-color: transparent !important;
-    color: white !important;
+    background-color: rgb(241, 84, 84) !important;
+    color: rgb(163, 48, 48) !important;
     font-weight: 600;
     border-bottom: 2px solid #db0000;
     padding: 0;

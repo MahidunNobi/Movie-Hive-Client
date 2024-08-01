@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { MovieType } from "../../../types/MovieTypes";
-import Ratting from "../../../componants/SharedComponants/Ratting/Ratting";
+import useAxiosSecure from "../../../..//hooks/useAxiosSecure";
+import { MovieType } from "../../../../types/MovieTypes";
+import Ratting from "../../../../componants/SharedComponants/Ratting/Ratting";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaPen } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const ManageMovie = () => {
+const AddManageFeatured = () => {
   const axiosSecure = useAxiosSecure();
 
   const {
@@ -136,4 +136,4 @@ const ManageMovie = () => {
   );
 };
 
-export default ManageMovie;
+export default AddManageFeatured;

@@ -13,8 +13,9 @@ import DashboardMovieDetails from "../pages/Dashboard/MovieDetails/MovieDetails"
 import EditMovie from "../pages/Dashboard/EditMovie/EditMovie";
 import Movies from "../pages/Movies/Movies";
 import ProtectedRoute from "./ProtectedRoute";
-import ManageFeatured from "../pages/Dashboard/ManageFeatured/ManageFeatured";
+import ManageFeatured from "../pages/Dashboard/Admin/ManageFeatured/ManageFeatured";
 import AdminRoute from "./AdminRoute";
+import AddManageFeatured from "../pages/Dashboard/Admin/AddManageFeatured/AddManageFeatured";
 
 const router = createBrowserRouter([
   {
@@ -73,7 +74,15 @@ const router = createBrowserRouter([
         path: "manage-featured",
         element: (
           <AdminRoute>
-            <ManageFeatured />{" "}
+            <ManageFeatured />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-featured/add-movie",
+        element: (
+          <AdminRoute>
+            <AddManageFeatured />
           </AdminRoute>
         ),
       },

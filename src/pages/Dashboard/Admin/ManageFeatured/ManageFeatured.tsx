@@ -1,46 +1,20 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { MovieType } from "../../../types/MovieTypes";
-import Ratting from "../../../componants/SharedComponants/Ratting/Ratting";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaPen } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../../../hooks/useAxiosPublic";
+import { MovieType } from "../../../../types/MovieTypes";
 import { Link } from "react-router-dom";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import Rating from "../../../../componants/SharedComponants/Ratting/Ratting";
+import BorderButton from "../../../../componants/SharedComponants/Buttons/BorderButton/BorderButton";
 
-const ManageMovie = () => {
-  const axiosSecure = useAxiosSecure();
-
-  const {
-    data: moviesRes,
-    refetch,
-    isLoading,
-    isPending,
-  } = useQuery<{ message: string; data: MovieType[] }>({
-    queryKey: ["get-user-movies"],
+const ManageFeatured = () => {
+  const axiosPublic = useAxiosPublic();
+  const { data, isLoading, isPending, isError } = useQuery<MovieType[]>({
+    queryKey: ["feature-movies"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/movies/user");
+      const res = await axiosPublic.get("/movies/featured");
       return res.data;
     },
   });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: string | undefined) => {
-      const res = axiosSecure.delete(`/movies/${id}`);
-      return res;
-    },
-  });
-
-  const movies = moviesRes?.data;
-
-  // Handling delete movie function
-  const handleDeleteMovie = async (id: string | undefined) => {
-    deleteMutation.mutate(id, {
-      onSuccess: (data) => {
-        if (data.data.success) {
-          refetch();
-        }
-      },
-    });
-  };
 
   if (isLoading || isPending) {
     return (
@@ -48,10 +22,25 @@ const ManageMovie = () => {
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
+  } else if (isError) {
+    return (
+      <div className="w-full flex justify-center">
+        <h2 className="text-red-600">There was an error</h2>
+      </div>
+    );
   }
+
+  const handleDeleteMovie = (id: string | undefined) => {
+    console.log(id);
+  };
 
   return (
     <div className="overflow-x-auto">
+      <div className="flex justify-end my-6">
+        <Link to={"add-movie"}>
+          <BorderButton text="Add Movie" />
+        </Link>
+      </div>
       <table className="table">
         {/* head */}
         <thead>
@@ -63,8 +52,8 @@ const ManageMovie = () => {
         </thead>
 
         <tbody>
-          {movies ? (
-            movies?.map((movie) => (
+          {data ? (
+            data?.map((movie) => (
               <tr key={movie._id}>
                 <td>
                   <div className="flex items-center gap-3">
@@ -102,20 +91,14 @@ const ManageMovie = () => {
                 </td>
                 {/* Ratting */}
                 <td>
-                  <div className="flex flex-col">
-                    <Ratting rating={movie.movie_ratting} />
+                  <div className="flex flex-col ">
+                    <Rating rating={movie.movie_ratting} />
                     <span className="text-sm ml-2 text-gray-600">
                       ({movie.movie_ratting}/5)
                     </span>
                   </div>
                 </td>
                 <td>
-                  <Link
-                    to={`edit/${movie._id}`}
-                    className="btn btn-sm btn-circle btn-outline mr-2"
-                  >
-                    <FaPen size={16} />
-                  </Link>
                   <button
                     onClick={() => handleDeleteMovie(movie._id)}
                     className="btn btn-sm btn-circle btn-outline btn-error"
@@ -136,4 +119,4 @@ const ManageMovie = () => {
   );
 };
 
-export default ManageMovie;
+export default ManageFeatured;
