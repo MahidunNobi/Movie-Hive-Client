@@ -1,14 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 import { MovieType } from "../../../../types/MovieTypes";
 import { Link } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Rating from "../../../../componants/SharedComponants/Ratting/Ratting";
-import BorderButton from "../../../../componants/SharedComponants/Buttons/BorderButton/BorderButton";
 import FilledButton from "../../../../componants/SharedComponants/Buttons/FilledButton/FilledButton";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 
 const ManageFeatured = () => {
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
+
   const { data, isLoading, isPending, isError } = useQuery<MovieType[]>({
     queryKey: ["feature-movies"],
     queryFn: async () => {
@@ -16,6 +18,19 @@ const ManageFeatured = () => {
       return res.data;
     },
   });
+  const mutation = useMutation({
+    mutationFn: (id: string | undefined) => {
+      return axiosSecure.post(`/movies/not-featured/${id}`);
+    },
+  });
+
+  const handleDeleteMovie = (id: string | undefined) => {
+    mutation.mutate(id, {
+      onSuccess: (res) => {
+        console.log(res.data);
+      },
+    });
+  };
 
   if (isLoading || isPending) {
     return (
@@ -30,10 +45,6 @@ const ManageFeatured = () => {
       </div>
     );
   }
-
-  const handleDeleteMovie = (id: string | undefined) => {
-    console.log(id);
-  };
 
   return (
     <div className="overflow-x-auto">
