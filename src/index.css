@@ -23,10 +23,10 @@ p{
 }
 
 a.active {
-    background-color: rgb(241, 84, 84) !important;
+    background-color: #fec7c7 !important;
     color: rgb(163, 48, 48) !important;
     font-weight: 600;
-    border-bottom: 2px solid #db0000;
-    padding: 0;
-    border-radius: 0;
+    /* border-bottom: 2px solid #db0000; */
+    /* padding: 0;
+    border-radius: 0; */
 }

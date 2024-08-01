@@ -79,7 +79,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "manage-featured/add-movie",
+        path: "add-featured-movies",
         element: (
           <AdminRoute>
             <AddManageFeatured />

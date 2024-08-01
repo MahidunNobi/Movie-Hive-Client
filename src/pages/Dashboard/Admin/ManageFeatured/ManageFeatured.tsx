@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Rating from "../../../../componants/SharedComponants/Ratting/Ratting";
 import BorderButton from "../../../../componants/SharedComponants/Buttons/BorderButton/BorderButton";
+import FilledButton from "../../../../componants/SharedComponants/Buttons/FilledButton/FilledButton";
 
 const ManageFeatured = () => {
   const axiosPublic = useAxiosPublic();
@@ -36,9 +37,9 @@ const ManageFeatured = () => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="flex justify-end my-6">
-        <Link to={"add-movie"}>
-          <BorderButton text="Add Movie" />
+      <div className="flex justify-end">
+        <Link to={"/dashboard/add-featured-movies"}>
+          <FilledButton text="Add Movie" />
         </Link>
       </div>
       <table className="table">
@@ -71,7 +72,7 @@ const ManageFeatured = () => {
                     </div>
                     <div>
                       <Link
-                        to={`${movie._id}`}
+                        to={`/dashboard/manage-movie/${movie._id}`}
                         className="font-bold hover:text-blue-600 duration-100"
                       >
                         {movie.movie_name} - {movie.published_year}

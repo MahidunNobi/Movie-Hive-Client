@@ -2,45 +2,25 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../..//hooks/useAxiosSecure";
 import { MovieType } from "../../../../types/MovieTypes";
 import Ratting from "../../../../componants/SharedComponants/Ratting/Ratting";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { FaPen } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { IoIosAdd } from "react-icons/io";
+import { FaArrowLeft } from "react-icons/fa";
 
 const AddManageFeatured = () => {
   const axiosSecure = useAxiosSecure();
 
   const {
-    data: moviesRes,
+    data: movies,
     refetch,
     isLoading,
     isPending,
-  } = useQuery<{ message: string; data: MovieType[] }>({
+  } = useQuery<MovieType[]>({
     queryKey: ["get-user-movies"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/movies/user");
+      const res = await axiosSecure.get("/movies/not-featured");
       return res.data;
     },
   });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: string | undefined) => {
-      const res = axiosSecure.delete(`/movies/${id}`);
-      return res;
-    },
-  });
-
-  const movies = moviesRes?.data;
-
-  // Handling delete movie function
-  const handleDeleteMovie = async (id: string | undefined) => {
-    deleteMutation.mutate(id, {
-      onSuccess: (data) => {
-        if (data.data.success) {
-          refetch();
-        }
-      },
-    });
-  };
 
   if (isLoading || isPending) {
     return (
@@ -52,6 +32,16 @@ const AddManageFeatured = () => {
 
   return (
     <div className="overflow-x-auto">
+      <div className="my-6">
+        <h1 className="text-3xl font-semibold text-center my-6">
+          Add Movies to Featured
+        </h1>
+        <Link to={"/dashboard/manage-featured"}>
+          <button className="hover:bg-indigo-200 hover:text-indigo-800 duration-100 px-2 border border-gray-700 hover:border-indigo-800 py-2 rounded-full">
+            <FaArrowLeft size={16} />
+          </button>
+        </Link>
+      </div>
       <table className="table">
         {/* head */}
         <thead>
@@ -82,7 +72,7 @@ const AddManageFeatured = () => {
                     </div>
                     <div>
                       <Link
-                        to={`${movie._id}`}
+                        to={`/dashboard/manage-movie/${movie._id}`}
                         className="font-bold hover:text-blue-600 duration-100"
                       >
                         {movie.movie_name} - {movie.published_year}
@@ -110,17 +100,8 @@ const AddManageFeatured = () => {
                   </div>
                 </td>
                 <td>
-                  <Link
-                    to={`edit/${movie._id}`}
-                    className="btn btn-sm btn-circle btn-outline mr-2"
-                  >
-                    <FaPen size={16} />
-                  </Link>
-                  <button
-                    onClick={() => handleDeleteMovie(movie._id)}
-                    className="btn btn-sm btn-circle btn-outline btn-error"
-                  >
-                    <RiDeleteBin6Line size={16} />
+                  <button className="btn btn-sm btn-circle btn-outline mr-2">
+                    <IoIosAdd size={20} />
                   </button>
                 </td>
               </tr>
