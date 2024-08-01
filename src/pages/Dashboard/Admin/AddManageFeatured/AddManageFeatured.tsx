@@ -5,9 +5,11 @@ import Ratting from "../../../../componants/SharedComponants/Ratting/Ratting";
 import { Link } from "react-router-dom";
 import { IoIosAdd } from "react-icons/io";
 import { FaArrowLeft } from "react-icons/fa";
+import useAxiosPublic from "../../../../hooks/useAxiosPublic";
 
 const AddManageFeatured = () => {
   const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
 
   const {
     data: movies,
@@ -17,10 +19,25 @@ const AddManageFeatured = () => {
   } = useQuery<MovieType[]>({
     queryKey: ["get-user-movies"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/movies/not-featured");
+      const res = await axiosPublic.get("/movies/not-featured");
       return res.data;
     },
   });
+  const mutation = useMutation({
+    mutationFn: (id: string | undefined) => {
+      return axiosSecure.post(`/movies/featured/${id}`);
+    },
+  });
+
+  const handleAddToFeatured = (id: string | undefined) => {
+    mutation.mutate(id, {
+      onSuccess: (res) => {
+        if (res.data.success) {
+          refetch();
+        }
+      },
+    });
+  };
 
   if (isLoading || isPending) {
     return (
@@ -100,7 +117,10 @@ const AddManageFeatured = () => {
                   </div>
                 </td>
                 <td>
-                  <button className="btn btn-sm btn-circle btn-outline mr-2">
+                  <button
+                    onClick={() => handleAddToFeatured(movie._id)}
+                    className="btn btn-sm btn-circle btn-outline mr-2"
+                  >
                     <IoIosAdd size={20} />
                   </button>
                 </td>

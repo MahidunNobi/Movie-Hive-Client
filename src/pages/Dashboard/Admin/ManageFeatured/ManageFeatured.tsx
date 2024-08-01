@@ -11,7 +11,9 @@ const ManageFeatured = () => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
 
-  const { data, isLoading, isPending, isError } = useQuery<MovieType[]>({
+  const { data, refetch, isLoading, isPending, isError } = useQuery<
+    MovieType[]
+  >({
     queryKey: ["feature-movies"],
     queryFn: async () => {
       const res = await axiosPublic.get("/movies/featured");
@@ -27,7 +29,9 @@ const ManageFeatured = () => {
   const handleDeleteMovie = (id: string | undefined) => {
     mutation.mutate(id, {
       onSuccess: (res) => {
-        console.log(res.data);
+        if (res.data.success) {
+          refetch();
+        }
       },
     });
   };
