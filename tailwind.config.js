@@ -16,7 +16,7 @@ export default {
       {
         netflixTheme: {
           // eslint-disable-next-line @typescript-eslint/no-var-requires
-          ...require("daisyui/src/theming/themes")["light"],
+          ...require("daisyui/src/theming/themes")["dark"],
           primary: "#db0000",
           secondary: "teal",
           // ".btn.btn-primary": {

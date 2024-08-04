@@ -23,8 +23,10 @@ p{
 }
 
 a.active {
-    background-color: #fec7c7 !important;
-    color: rgb(163, 48, 48) !important;
+    background-color: transparent !important;
+    /* text-decoration: underline; */
+    color: #db0000 !important;
+    /* text-decoration-thickness: 2px; */
     font-weight: 600;
     /* border-bottom: 2px solid #db0000; */
     /* padding: 0;
