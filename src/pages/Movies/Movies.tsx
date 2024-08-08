@@ -3,16 +3,23 @@ import Movie from "../../componants/SharedComponants/Movie/Movie";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { MovieType } from "../../types/MovieTypes";
 import { CiSearch } from "react-icons/ci";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 const Movies = () => {
   const axiosPublic = useAxiosPublic();
   const [movies, setMovies] = useState<MovieType[] | null>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const { data, isLoading, isPending, isError } = useQuery<MovieType[]>({
+  const { data, isLoading, refetch, isPending, isError } = useQuery<
+    MovieType[]
+  >({
     queryKey: ["get-all-movies"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/movies");
+      const res = await axiosPublic.get(
+        searchRef.current?.value
+          ? `/movies?movie_name=${searchRef.current?.value}`
+          : `/movies`
+      );
       setMovies(res.data);
       return res.data;
     },
@@ -58,6 +65,10 @@ const Movies = () => {
     }
   };
 
+  const handleSearch = () => {
+    refetch();
+  };
+
   if (isLoading || isPending) {
     return (
       <div className="w-full flex justify-center">
@@ -71,15 +82,15 @@ const Movies = () => {
       </div>
     );
   }
-  console.log(movies);
+
   return (
     <div className="pt-24">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-3">
         <h1 className="text-4xl font-ubuntu text-center font-semibold ">
           All Movies
         </h1>
 
-        <div className="flex justify-between">
+        <div className="flex flex-col md:flex-row gap-4 items-center mt-6 justify-center md:justify-between">
           {/* Sort by */}
           <div>
             <select
@@ -106,8 +117,16 @@ const Movies = () => {
           {/* Search */}
           <div>
             <label className="input input-bordered flex items-center gap-2 max-w-xs pr-0 overflow-hidden">
-              <input type="text" className="grow" placeholder="Search" />
-              <button className="bg-gray-600 hover:bg-gray-500 duration-150 h-full px-3">
+              <input
+                type="text"
+                className="grow"
+                ref={searchRef}
+                placeholder="Search"
+              />
+              <button
+                onClick={handleSearch}
+                className="bg-gray-600 hover:bg-gray-500 duration-150 h-full px-3"
+              >
                 <CiSearch size={24} />
               </button>
             </label>

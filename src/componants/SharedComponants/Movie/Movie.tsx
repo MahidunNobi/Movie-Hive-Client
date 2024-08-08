@@ -14,7 +14,7 @@ const Movie = ({ movie }: { movie: MovieType }) => {
     story,
   } = movie;
   return (
-    <div className="rounded h-[400px] max-w-[260px] overflow-hidden relative group cursor-pointer">
+    <div className="rounded h-[400px] max-w-[260px] mx-auto overflow-hidden relative group cursor-pointer">
       <img
         src={
           movie_poster_url
