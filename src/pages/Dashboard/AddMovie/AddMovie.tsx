@@ -52,15 +52,25 @@ const AddMovie = () => {
         icon: "error",
       });
     }
+    if (Number(form.movie_ratting.value) > 5) {
+      return alert("Ratting cannot be more than 5");
+    }
+
     const credentials: MovieType = {
       movie_name: form.movie_name.value,
       published_year: form.published_year.value,
       story: form.story.value,
       movie_geners: selectedGeners,
-      movie_ratting: form.movie_ratting.value,
+      movie_ratting: Number(form.movie_ratting.value),
       movie_poster_url: form.movie_poster_url.value,
     };
-    mutation.mutate(credentials);
+    mutation.mutate(credentials, {
+      onSuccess: (data) => {
+        if (data.data.success) {
+          form.reset();
+        }
+      },
+    });
   };
 
   return (
@@ -131,10 +141,9 @@ const AddMovie = () => {
           </label>
 
           <input
-            type="number"
+            type="text"
             placeholder="4.5/5"
             required
-            max={5}
             name="movie_ratting"
             className="input input-bordered w-full mt-2"
           />

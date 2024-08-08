@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { SidebarContext } from "./Sidebar";
 import { useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { SidebarContext } from "../../../../layouts/DashboardLayout";
 
 type PropsTypes = {
   path: string;
